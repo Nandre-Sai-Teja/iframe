@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Child</title>
+</head>
+<body>
+    <div>
+        <h3>Child Page</h3>
+        <p id="child-message">Waiting for parent message...</p>
+
+        <!-- <iframe src="parent.html" id="child-message"></iframe> -->
+
+        <button onclick="sendMessageToParent()" >Click here to send message to the parent</button>
+
+        <script>
+            //here message is the event type
+            window.addEventListener("message", (event) => {
+                document.getElementById("child-message").innerText = "Received: " + event.data;
+            })
+
+            function sendMessageToParent(){
+                window.parent.postMessage("Hello from child", "*")
+            }
+        </script>
+    </div>
+</body>
+</html>

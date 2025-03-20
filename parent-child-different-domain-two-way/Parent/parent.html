@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Page</title>
+</head>
+
+<body>
+    <div>
+        <h2>Parent Page</h2>
+
+        <iframe src="http://127.0.0.1:4400/child.html" id="childFrame" width="400px" height="300px"></iframe>
+        <br><br>
+
+        <p id="parent-message">Waiting for the child message</p>
+        <button onclick="sendMessage()">Click here to send message to the child</button>
+
+        <script>
+
+            const childOrigin = "http://127.0.0.1:4400/child.html";
+            function sendMessage() {
+                const iframe = document.getElementById("childFrame").contentWindow;
+                iframe.postMessage("Hello from Parent", childOrigin)
+            }
+
+            window.addEventListener("message", (event) => {
+                if(event.origin !== "http://127.0.0.1:4400") return; //extra safety --> even if we dont use nothing happens
+                //event.origin --> origin of the page that sent the message
+                //window.location.origin --> origin of the current page
+                document.getElementById("parent-message").innerText = "Received: " + event.data;
+            })
+
+            //the below also works
+            // window.addEventListener("message", (event) => {
+            //     //console.log("Received message in Parent:", event.data, "from:", event.origin);
+            //     if (event.origin !== "http://127.0.0.1:4400") return; // Ensure it's from the correct origin
+            //     document.getElementById("parent-message").innerText = "Received: " + event.data;
+            // });
+
+        </script>
+    </div>
+</body>
+
+</html>

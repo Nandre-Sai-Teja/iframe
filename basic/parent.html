@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parent Page</title>
+</head>
+<body>
+    <h2>Parent Page</h2>
+    <iframe id="childFrame" src="child.html" width="500" height="300"></iframe>
+
+    <div>
+        <button onclick="sendMessage()">Send Message to Child</button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const iframe = document.getElementById('childFrame').contentWindow;
+            iframe.postMessage("Hello from Parent", "*"); // Sending message
+        }
+    </script>
+</body>
+</html>

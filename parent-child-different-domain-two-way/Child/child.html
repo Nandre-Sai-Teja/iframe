@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Child</title>
+</head>
+
+<body>
+    <div>
+        <h3>Child Page</h3>
+        <p id="child-message">Waiting for parent message...</p>
+
+        <!-- <iframe src="parent.html" id="child-message"></iframe> -->
+
+        <button onclick="sendMessageToParent()">Click here to send message to the parent</button>
+
+        <script>
+
+            const parentOrigin = "http://127.0.0.1:5500";
+            // window.addEventListener("message", (event) => {
+            //     document.getElementById("child-message").innerText = "Received: " + event.data;
+            // })
+
+            window.addEventListener("message", (event) => {
+                //console.log("Received message in Child:", event.data, "from:", event.origin);
+                document.getElementById("child-message").innerText = "Received: " + event.data;
+            });
+
+
+            function sendMessageToParent() {
+                window.parent.postMessage("Hello from child", parentOrigin)
+            }
+        </script>
+    </div>
+</body>
+
+</html>

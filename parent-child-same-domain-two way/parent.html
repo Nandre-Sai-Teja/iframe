@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Page</title>
+</head>
+<body>
+    <div>
+        <h2>Parent Page</h2>
+
+        <iframe src="child.html" id="childFrame" width="400px" height="300px"></iframe>
+        <br><br>
+
+        <p id="parent-message" >Waiting for the child message</p>
+        <button onclick="sendMessage()" >Click here to send message to the child</button>        
+
+        <script>
+            function sendMessage(){
+                const iframe = document.getElementById("childFrame").contentWindow;
+                iframe.postMessage("Hello from Parent", "*")
+            }
+
+            //parent listening for messages from the child
+            window.addEventListener("message", (event) => {//message event is triggered when the child sends a message back
+                if(event.origin !== window.location.origin) return; //extra safety --> even if we dont use nothing happens
+                //event.origin --> origin of the page that sent the message
+                //window.location.origin --> origin of the current page
+                document.getElementById("parent-message").innerText = "Received: " + event.data;
+            })
+        </script>
+    </div>
+</body>
+</html>

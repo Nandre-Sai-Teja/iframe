@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent</title>
+</head>
+<body>
+    <div>
+        <h2>Parent Page</h2>
+
+        <iframe src="child.html" id="childFrame"></iframe>
+
+        <br><br>
+
+        <button onclick="sendMessage()" >Click here to send the message to child</button>
+
+        <script>
+            function sendMessage(){
+                const iframe = document.getElementById("childFrame").contentWindow;
+                iframe.postMessage("Hello from Parent", "*") //* means any origin --> even if we dont mentionit still runs
+                //postMessage(message, targetOrigin) 
+            }
+        </script>
+    </div>
+</body>
+</html>
