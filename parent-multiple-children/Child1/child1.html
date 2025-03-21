@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>child1 page</title>
+</head>
+<body>
+    <div>
+        <h2 style="color: darkcyan">Child 1 Page</h2>
+        <p id="child-message" >Waiting for the message</p>
+
+        <button onclick="sendMessageToParent()" >Send Message to Parent</button>
+
+        <script>
+            const parentOrigin = "http://127.0.0.1:5500"
+
+            window.addEventListener("message", (event) =>{
+                document.getElementById("child-message").innerText = "Received: " + JSON.stringify(event.data);
+                //document.getElementById("child-message").innerText = "Received: " + event.data; --> if event.data is an object, the browser cannot convert it to string, thats the reason it will show like [object object]
+            })
+
+            function sendMessageToParent(){
+                window.parent.postMessage({child: "Child1", message: "Hello from child 1"}, parentOrigin);
+            }
+        </script>
+    </div>
+</body>
+</html>

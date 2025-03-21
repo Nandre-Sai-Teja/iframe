@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>child 2 page</title>
+</head>
+<body>
+    <div>
+        <h2 style="color: darkcyan">Child 2 Page</h2>
+        <p id="child-message" >Waiting for the message</p>
+
+        <button onclick="sendMessageToParent()" >Send Message to Parent</button>
+
+        <script>
+            const parentOrigin = "http://127.0.0.1:5500"
+
+            window.addEventListener("message", (event) =>{
+                document.getElementById("child-message").innerText = "Received: " + JSON.stringify(event.data);
+
+            })
+
+            function sendMessageToParent(){
+                window.parent.postMessage({child: "Child2", message: "Hello from child 2"}, parentOrigin);
+            }
+        </script>
+    </div>
+</body>
+</html>

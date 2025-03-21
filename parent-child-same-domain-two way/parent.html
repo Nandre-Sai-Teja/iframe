@@ -19,6 +19,7 @@
             function sendMessage(){
                 const iframe = document.getElementById("childFrame").contentWindow;
                 iframe.postMessage("Hello from Parent", "*")
+                //iframe.postMessage(JSON.stringify("Hello from parent"), "*")
             }
 
             //parent listening for messages from the child

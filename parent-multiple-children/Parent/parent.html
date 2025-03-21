@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Page</title>
+</head>
+<body>
+    <h2 style="color: red;">Parent Page</h2>
+    
+    <iframe src="http://127.0.0.1:4400/child1.html" id="child1" width="400px" height="300px"></iframe>
+    <iframe src="http://127.0.0.1:4401/child2.html" id="child2" width="400px" height="300px"></iframe>
+    <iframe src="http://127.0.0.1:4402/child3.html" id="child3" width="400px" height="300px"></iframe>
+
+    <br><br>
+    <p id="parent-message">Waiting for messages...</p>
+    
+    <button onclick="sendMessageToChildren()">Send Message to All Children</button>
+
+    <script>
+        const childOrigins = [
+            "http://127.0.0.1:4400",
+            "http://127.0.0.1:4401",
+            "http://127.0.0.1:4402"
+        ];
+        
+        const storedData = {};  
+        
+        function sendMessageToChildren() {
+            childOrigins.forEach((origin, index) => {
+                const iframe = document.getElementById(`child${index + 1}`).contentWindow;
+                iframe.postMessage("Hello from Parent", origin);
+            });
+        }
+
+        window.addEventListener("message", (event) => {
+            //if (!childOrigins.includes(event.origin)) return;
+
+            console.log(`Received message from ${event.origin}:`, event.data);
+            storedData[event.origin] = event.data;  // Store child data ; event.origin --> origin (protocolo+domain+port) of the sender
+            
+            
+            document.getElementById("parent-message").innerText = 
+                "Stored Data: " + JSON.stringify(storedData);
+
+            // Share received data with all children
+            childOrigins.forEach((origin, index) => {
+                if (event.origin !== origin) {  // Don't send data back to the sender
+                    const iframe = document.getElementById(`child${index + 1}`).contentWindow;
+                    iframe.postMessage(storedData, origin);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
